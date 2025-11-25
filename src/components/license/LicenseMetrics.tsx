@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LicenseMetrics as LicenseMetricsType } from '@/types/license.types'
-import { FileText, Award, Users, Calendar, CheckCircle } from 'lucide-react'
+import { FileText, Award, Users, Calendar } from 'lucide-react'
 
 interface LicenseMetricsProps {
   metrics: LicenseMetricsType | null

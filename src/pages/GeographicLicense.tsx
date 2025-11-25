@@ -22,7 +22,6 @@ import { exportToCSV } from '@/utils/exportHelpers'
 
 export default function GeographicLicense() {
   const [activeView, setActiveView] = useState<'geographic' | 'license'>('geographic')
-  const [selectedState, setSelectedState] = useState<string | null>(null)
   const [selectedCity, setSelectedCity] = useState<{ city: string; state: string } | null>(null)
   const [selectedStates, setSelectedStates] = useState<string[]>([])
   const [page, setPage] = useState(1)
@@ -57,7 +56,6 @@ export default function GeographicLicense() {
   // Fetch city details when selected
   const {
     data: cityDetails,
-    isLoading: isLoadingCity,
   } = useCityDetails({
     cityName: selectedCity?.city || '',
     stateName: selectedCity?.state,
@@ -182,7 +180,7 @@ export default function GeographicLicense() {
           {/* USA Map */}
           <USAMap
             stateMetrics={geoData?.stateMetrics || []}
-            onStateClick={setSelectedState}
+            onStateClick={() => {}}
           />
 
           {/* Geographic Charts */}
@@ -197,7 +195,7 @@ export default function GeographicLicense() {
           <StateTable
             stateMetrics={geoData?.stateMetrics || []}
             isLoading={isLoadingGeo}
-            onStateClick={setSelectedState}
+            onStateClick={() => {}}
           />
 
           {/* City Grid */}
@@ -232,7 +230,6 @@ export default function GeographicLicense() {
             }}
             professions={professions}
             states={states}
-            countries={[]}
           />
 
           {/* License Charts */}

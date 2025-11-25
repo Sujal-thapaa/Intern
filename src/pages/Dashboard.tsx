@@ -16,17 +16,6 @@ import { formatCurrency } from '@/utils/currencyParser'
 import { formatDistanceToNow } from 'date-fns'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import {
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts'
 
 export default function Dashboard() {
   const { data: metrics, isLoading: metricsLoading } = useDashboardMetrics()

@@ -9,7 +9,7 @@ export default function Home() {
   const { data: payments, isLoading: paymentsLoading } = usePayments()
   const { data: courseLocations, isLoading: coursesLoading } = useCourseLocationData()
 
-  const totalParticipants = participants?.length || 0
+  const totalParticipants = participants?.data?.length || participants?.total || 0
   const totalRevenue =
     payments?.reduce((sum, payment) => sum + (payment.Amount || 0), 0) || 0
 

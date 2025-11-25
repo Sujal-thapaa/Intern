@@ -50,9 +50,6 @@ export default function Licenses() {
     return Array.from(stateSet).sort()
   }, [licenseData])
 
-  const countries = useMemo(() => {
-    return [] // Would need to fetch from data
-  }, [])
 
   const handleSort = (column: string) => {
     if (sortBy === column) {
@@ -137,7 +134,6 @@ export default function Licenses() {
         }}
         professions={professions}
         states={states}
-        countries={countries}
       />
 
       {/* Charts */}

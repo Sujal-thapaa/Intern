@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import {
   Table,
   TableBody,
@@ -20,10 +20,8 @@ import {
 import { EnrichedPayment } from '@/types/payment.types'
 import { ChevronUp, ChevronDown, Eye, Download } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatCurrency } from '@/utils/currencyParser'
 import { formatDate } from '@/utils/dateFormatter'
-import { parseCurrency } from '@/utils/currencyParser'
-import { maskCardNumber, getPaymentMethodIcon } from '@/utils/cardMasker'
+import { maskCardNumber } from '@/utils/cardMasker'
 import { CreditCard } from 'lucide-react'
 
 interface PaymentTableProps {

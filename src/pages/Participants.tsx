@@ -6,7 +6,6 @@ import { ParticipantTable } from '@/components/participants/ParticipantTable'
 import { ParticipantCharts } from '@/components/participants/ParticipantCharts'
 import { useParticipants, useAllParticipants } from '@/hooks/useParticipants'
 import { FilterState, ParticipantStats as Stats } from '@/types/participant.types'
-import { Participant } from '@/types/participant.types'
 import { testParticipantTable } from '@/lib/testSupabase'
 
 // Run diagnostic on component mount (development only)

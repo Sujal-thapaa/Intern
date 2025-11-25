@@ -157,7 +157,6 @@ export default function Payments() {
           setFilters(newFilters)
           setPage(1) // Reset to first page when filters change
         }}
-        maxAmount={maxAmount}
         paymentMethods={paymentMethods}
       />
 

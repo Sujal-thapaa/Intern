@@ -15,7 +15,6 @@ import {
   Cell,
 } from 'recharts'
 import { formatCurrency } from '@/utils/currencyParser'
-import { getStateAbbreviation } from '@/utils/stateMapping'
 
 interface GeographicChartsProps {
   stateMetrics: StateMetrics[]
@@ -106,7 +105,7 @@ export function GeographicCharts({ stateMetrics, cityData }: GeographicChartsPro
               }}
             />
             <Scatter name="Cities" data={topCities} fill="#8884d8">
-              {topCities.map((entry, index) => (
+              {topCities.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Scatter>

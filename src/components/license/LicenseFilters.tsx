@@ -17,7 +17,6 @@ interface LicenseFiltersProps {
   onFiltersChange: (filters: LicenseFilterState) => void
   professions: string[]
   states: string[]
-  countries: string[]
 }
 
 export function LicenseFilters({
@@ -25,7 +24,6 @@ export function LicenseFilters({
   onFiltersChange,
   professions,
   states,
-  countries,
 }: LicenseFiltersProps) {
   const handleClearFilters = () => {
     onFiltersChange({

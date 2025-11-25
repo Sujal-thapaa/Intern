@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Download, FileText, FileSpreadsheet, Mail } from 'lucide-react'
+import { Download, FileText } from 'lucide-react'
 
 export default function Reports() {
   const [selectedTables, setSelectedTables] = useState<string[]>([])

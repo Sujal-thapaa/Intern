@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { Participant } from '@/types/participant.types'
-import { GeographicData, StateMetrics, CityMetrics } from '@/types/geographic.types'
 import { aggregateByGeography, aggregateStateMetrics, calculateDiversityIndex } from '@/utils/geographicAggregation'
 import { parseCurrency } from '@/utils/currencyParser'
 

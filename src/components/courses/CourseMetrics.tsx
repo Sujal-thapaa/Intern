@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CourseAnalytics } from '@/types/course.types'
-import { BookOpen, Users, DollarSign, TrendingUp, Award, Target, CheckCircle, BarChart3 } from 'lucide-react'
+import { BookOpen, Users, DollarSign, TrendingUp, Award, CheckCircle, BarChart3 } from 'lucide-react'
 import { formatCurrency } from '@/utils/currencyParser'
 
 interface CourseMetricsProps {

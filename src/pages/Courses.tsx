@@ -9,7 +9,7 @@ import { useEnrollmentTrends } from '@/hooks/useEnrollmentTrends'
 import { useRevenueAnalytics } from '@/hooks/useRevenueAnalytics'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
-import { CourseFilterState, CourseAnalytics, ParticipantCourse } from '@/types/course.types'
+import { CourseFilterState, ParticipantCourse } from '@/types/course.types'
 import { normalizeStatus } from '@/utils/statusNormalizer'
 
 export default function Courses() {
@@ -51,7 +51,6 @@ export default function Courses() {
   // Fetch status distribution from participant_course
   const {
     data: statusDistribution,
-    isLoading: isLoadingStatusDistribution,
   } = useQuery({
     queryKey: ['statusDistribution', filters.dateRange],
     queryFn: async () => {

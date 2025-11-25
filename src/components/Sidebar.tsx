@@ -70,11 +70,6 @@ export function Sidebar() {
                 >
                   <item.icon className="mr-3 h-5 w-5" />
                   <span className="flex-1">{item.name}</span>
-                  {item.badge && (
-                    <span className="text-xs bg-primary/20 text-primary-foreground px-2 py-0.5 rounded">
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               )
             })}

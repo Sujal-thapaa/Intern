@@ -34,7 +34,6 @@ export function useCityDetails(options: UseCityDetailsOptions) {
         (sum, p) => sum + (p['Classes Taken'] || 0),
         0
       )
-      const activeCount = cityParticipants.filter((p) => p.ParticipantStatusID === 1).length
 
       const metrics: CityMetrics = {
         city: cityName,

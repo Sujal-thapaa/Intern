@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
-import { Payment, ParticipantCourse, Course, RevenueByType } from '@/types/course.types'
+import { ParticipantCourse, Course, RevenueByType } from '@/types/course.types'
 import { parseCurrency } from '@/utils/currencyParser'
 import { getYearString } from '@/utils/dateFormatter'
 

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import {
   Table,
   TableBody,
@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { EnrichedLicense, LicenseFilterState } from '@/types/license.types'
-import { ChevronUp, ChevronDown, Eye, Download, FileText } from 'lucide-react'
+import { ChevronUp, ChevronDown, Download, FileText } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDate } from '@/utils/dateFormatter'
 import { getLicenseStatus } from '@/utils/licenseValidator'
@@ -44,7 +44,6 @@ export function LicenseTable({
   licenses,
   isLoading,
   filters,
-  total,
   page,
   pageSize,
   onPageChange,

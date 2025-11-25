@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Participant } from '@/types/participant.types'
-import { formatDate } from '@/utils/dateFormatter'
 
 interface CityDetailModalProps {
   city: string

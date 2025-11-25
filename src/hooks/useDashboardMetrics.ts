@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { Participant } from '@/types/participant.types'
-import { Course } from '@/types/course.types'
 import { Payment } from '@/types/payment.types'
-import { ParticipantLicense } from '@/types/license.types'
 import { parseCurrency } from '@/utils/currencyParser'
-// Removed unused import
 
 export interface DashboardMetrics {
   totalParticipants: number
@@ -108,11 +105,8 @@ export function useDashboardMetrics() {
       const pendingPayments = payments.length - completedPayments
 
       // Top course (by enrollment count)
-      const courseEnrollmentMap = new Map<number, number>()
-      participantCourses.forEach((pc) => {
-        // Would need to join with course_location_date to get Course ID
-        // For now, use a placeholder
-      })
+      // Would need to join with course_location_date to get Course ID
+      // For now, use a placeholder
       const topCourse = { name: 'N/A', enrollments: 0 }
 
       // Calculate trends (simplified - would need historical data)

@@ -1,6 +1,5 @@
 import { Participant } from '@/types/participant.types'
-import { GeographicData, StateMetrics, CityMetrics } from '@/types/geographic.types'
-import { parseCurrency } from './currencyParser'
+import { GeographicData, StateMetrics } from '@/types/geographic.types'
 
 /**
  * Aggregate participants by geography
@@ -88,7 +87,7 @@ export function calculateDiversityIndex(geographicData: GeographicData[]): numbe
 export function aggregateStateMetrics(
   participants: Participant[],
   licenses: any[] = [],
-  payments: any[] = []
+  _payments: any[] = []
 ): StateMetrics[] {
   const stateMap = new Map<string, StateMetrics>()
   const cityMap = new Map<string, Set<string>>()

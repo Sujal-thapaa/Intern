@@ -9,23 +9,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Slider } from '@/components/ui/slider'
 import { PaymentFilterState } from '@/types/payment.types'
 import { getDatePresets } from '@/utils/dateGrouping'
 import { Search, X } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 
 interface PaymentFiltersProps {
   filters: PaymentFilterState
   onFiltersChange: (filters: PaymentFilterState) => void
-  maxAmount: number
   paymentMethods: string[]
 }
 
 export function PaymentFilters({
   filters,
   onFiltersChange,
-  maxAmount,
   paymentMethods,
 }: PaymentFiltersProps) {
   const presets = getDatePresets()
@@ -45,6 +41,7 @@ export function PaymentFilters({
       dateRange: [null, null],
       paymentMethods: [],
       paymentTypes: [],
+      amountRange: [0, 100000],
       hasApproval: null,
       search: '',
     })

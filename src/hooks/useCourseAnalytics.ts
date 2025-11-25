@@ -27,7 +27,6 @@ export function useCourseAnalytics(options: UseCourseAnalyticsOptions = {}) {
       // Fetch all course location dates
       // Try different table name variations
       let courseLocations: any[] | null = null
-      let locationsError: any = null
       
       // Try course_location_date first
       let query = supabase.from('course_location_date').select('*')
@@ -39,7 +38,6 @@ export function useCourseAnalytics(options: UseCourseAnalyticsOptions = {}) {
         const result2 = await supabase.from('course_location_data').select('*')
         
         if (result2.error) {
-          locationsError = result2.error
           console.error('Course locations error - tried both course_location_date and course_location_data:', {
             error1: result1.error.message,
             error2: result2.error.message,

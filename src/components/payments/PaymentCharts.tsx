@@ -5,12 +5,9 @@ import {
   RevenueByDate,
 } from '@/types/payment.types'
 import {
-  LineChart,
   Line,
   AreaChart,
   Area,
-  BarChart,
-  Bar,
   PieChart,
   Pie,
   Cell,
@@ -71,17 +68,6 @@ export function PaymentCharts({
     }))
   }, [paymentsByMethodOverTime])
 
-  // Chart 4: Payment Type Breakdown
-  const paymentTypeData = useMemo(() => {
-    // This would need to be calculated from payment descriptions
-    // For now, return placeholder data structure
-    return [
-      { type: 'Full Payment', count: 0, revenue: 0 },
-      { type: 'Partial Payment', count: 0, revenue: 0 },
-      { type: 'Bundle Split', count: 0, revenue: 0 },
-      { type: 'Other', count: 0, revenue: 0 },
-    ]
-  }, [])
 
   return (
     <div className="space-y-6">

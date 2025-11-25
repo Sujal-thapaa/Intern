@@ -1,5 +1,4 @@
 import { EnrichedPayment } from '@/types/payment.types'
-import { formatCurrency } from './currencyParser'
 import { formatDate } from './dateFormatter'
 
 /**

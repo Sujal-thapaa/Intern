@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
-import { Payment, RevenueByDate } from '@/types/payment.types'
+import { Payment } from '@/types/payment.types'
 import { groupByDate, calculateMovingAverage } from '@/utils/dateGrouping'
 
 interface UseRevenueTrendsOptions {
