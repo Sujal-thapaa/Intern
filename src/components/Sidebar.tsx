@@ -8,6 +8,7 @@ import {
   Menu,
   X,
   MapPin,
+  TrendingUp,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/store/uiStore'
@@ -20,6 +21,7 @@ const navigation = [
   { name: 'Payments', href: '/payments', icon: CreditCard },
   { name: 'Licenses', href: '/licenses', icon: FileText },
   { name: 'Geographic & License', href: '/geographic-license', icon: MapPin },
+  { name: 'Comparison', href: '/comparison', icon: TrendingUp },
 ]
 
 export function Sidebar() {

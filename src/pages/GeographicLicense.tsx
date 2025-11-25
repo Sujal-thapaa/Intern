@@ -3,8 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GeographicMetrics } from '@/components/geographic/GeographicMetrics'
 import { USAMap } from '@/components/geographic/USAMap'
 import { GeographicCharts } from '@/components/geographic/GeographicCharts'
-import { StateTable } from '@/components/geographic/StateTable'
-import { CityGrid } from '@/components/geographic/CityGrid'
 import { StateComparison } from '@/components/geographic/StateComparison'
 import { CityDetailModal } from '@/components/geographic/CityDetailModal'
 import { LicenseMetrics } from '@/components/license/LicenseMetrics'
@@ -61,18 +59,6 @@ export default function GeographicLicense() {
     stateName: selectedCity?.state,
   })
 
-  // Convert geographic data to CityMetrics format
-  const cityMetrics = useMemo(() => {
-    if (!geoData?.byCity) return []
-    return geoData.byCity.map((city) => ({
-      city: city.city,
-      city_id: city.city_id,
-      state: city.state_province,
-      participants: city.participant_count,
-      classes_taken: city.total_classes,
-      revenue: city.total_revenue,
-    }))
-  }, [geoData])
 
   // Get unique values for license filters
   const professions = useMemo(() => {
@@ -191,19 +177,6 @@ export default function GeographicLicense() {
             />
           )}
 
-          {/* State Table */}
-          <StateTable
-            stateMetrics={geoData?.stateMetrics || []}
-            isLoading={isLoadingGeo}
-            onStateClick={() => {}}
-          />
-
-          {/* City Grid */}
-          <CityGrid
-            cities={cityMetrics}
-            isLoading={isLoadingGeo}
-            onCityClick={(city, state) => setSelectedCity({ city, state })}
-          />
 
           {/* State Comparison */}
           <StateComparison

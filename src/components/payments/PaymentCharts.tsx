@@ -1,16 +1,9 @@
 import { useMemo } from 'react'
 import { ChartCard } from '@/components/ChartCard'
-import {
-  PaymentMethodStats,
-  RevenueByDate,
-} from '@/types/payment.types'
+import { RevenueByDate } from '@/types/payment.types'
 import {
   Line,
-  AreaChart,
   Area,
-  PieChart,
-  Pie,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -20,7 +13,6 @@ import {
   ComposedChart,
 } from 'recharts'
 import { formatCurrency } from '@/utils/currencyParser'
-import { getPaymentMethodColor } from '@/utils/cardMasker'
 
 interface PaymentChartsProps {
   revenueTrends: {
@@ -28,16 +20,10 @@ interface PaymentChartsProps {
     movingAverage: number[]
     cumulativeRevenue: number[]
   } | null
-  methodStats: PaymentMethodStats[]
-  paymentsByMethodOverTime: RevenueByDate[]
 }
-
-const COLORS = ['#1A1F71', '#EB001B', '#006FCF', '#10b981', '#f59e0b', '#6b7280']
 
 export function PaymentCharts({
   revenueTrends,
-  methodStats,
-  paymentsByMethodOverTime,
 }: PaymentChartsProps) {
   // Chart 1: Revenue Trend Analysis
   const trendData = useMemo(() => {
@@ -49,25 +35,6 @@ export function PaymentCharts({
       cumulative: revenueTrends.cumulativeRevenue[index] || 0,
     }))
   }, [revenueTrends])
-
-  // Chart 2: Payment Method Distribution
-  const methodDistribution = useMemo(() => {
-    return methodStats.map((stat) => ({
-      name: stat.method,
-      value: stat.revenue,
-      count: stat.count,
-      percentage: stat.percentage,
-    }))
-  }, [methodStats])
-
-  // Chart 3: Revenue by Payment Method Over Time
-  const methodOverTimeData = useMemo(() => {
-    return paymentsByMethodOverTime.map((item) => ({
-      date: item.date,
-      ...item.byPaymentMethod,
-    }))
-  }, [paymentsByMethodOverTime])
-
 
   return (
     <div className="space-y-6">
@@ -138,71 +105,6 @@ export function PaymentCharts({
           </ResponsiveContainer>
         )}
       </ChartCard>
-
-      {/* Row 2: Payment Method Distribution and Revenue by Method Over Time */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <ChartCard
-          title="Payment Method Distribution"
-          description="Revenue breakdown by payment method"
-        >
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={methodDistribution}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percentage }) => `${name}: ${percentage.toFixed(0)}%`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {methodDistribution.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={getPaymentMethodColor(entry.name) || COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value: any) => formatCurrency(Number(value))} />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        <ChartCard
-          title="Revenue by Payment Method Over Time"
-          description="Stacked area chart showing revenue trends by method"
-        >
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={methodOverTimeData}>
-              <defs>
-                {Object.keys(methodOverTimeData[0] || {}).filter((k) => k !== 'date').map((method, i) => (
-                  <linearGradient key={method} id={`color${method}`} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={getPaymentMethodColor(method) || COLORS[i]} stopOpacity={0.8} />
-                    <stop offset="95%" stopColor={getPaymentMethodColor(method) || COLORS[i]} stopOpacity={0} />
-                  </linearGradient>
-                ))}
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip formatter={(value: any) => formatCurrency(Number(value))} />
-              <Legend />
-              {Object.keys(methodOverTimeData[0] || {}).filter((k) => k !== 'date').map((method, i) => (
-                <Area
-                  key={method}
-                  type="monotone"
-                  dataKey={method}
-                  stackId="1"
-                  stroke={getPaymentMethodColor(method) || COLORS[i]}
-                  fill={`url(#color${method})`}
-                  name={method}
-                />
-              ))}
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartCard>
-      </div>
     </div>
   )
 }

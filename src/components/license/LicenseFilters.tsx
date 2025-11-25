@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -9,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { LicenseFilterState } from '@/types/license.types'
-import { Search, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 
 interface LicenseFiltersProps {
@@ -39,8 +38,7 @@ export function LicenseFilters({
   const hasActiveFilters =
     filters.professions.length > 0 ||
     filters.states.length > 0 ||
-    filters.isCurrent !== null ||
-    filters.search !== ''
+    filters.isCurrent !== null
 
   return (
     <Card className="rounded-xl shadow-sm">
@@ -48,17 +46,6 @@ export function LicenseFilters({
         <CardTitle>License Filters</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by DAS Number, License Number, or Name..."
-            value={filters.search}
-            onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
-            className="pl-10"
-          />
-        </div>
-
         {/* Filters Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Profession */}

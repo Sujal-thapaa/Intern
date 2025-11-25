@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { GlobalSearch } from '@/components/shared/GlobalSearch'
 import { useUIStore } from '@/store/uiStore'
 import { Moon, Sun } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -19,18 +18,8 @@ export function TopNavBar() {
           />
         </Link>
 
-        {/* Center Section - Search */}
-        <div className="flex-1 max-w-2xl mx-4 hidden md:block">
-          <GlobalSearch />
-        </div>
-
         {/* Right Section - Actions */}
         <div className="flex items-center gap-2">
-          {/* Mobile Search */}
-          <div className="md:hidden">
-            <GlobalSearch className="w-64" />
-          </div>
-
           {/* Theme Toggle */}
           <Button variant="ghost" size="icon" onClick={toggleDarkMode} className="h-9 w-9">
             {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}

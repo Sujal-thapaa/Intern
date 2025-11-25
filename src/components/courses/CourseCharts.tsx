@@ -3,15 +3,12 @@ import { ChartCard } from '@/components/ChartCard'
 import {
   CourseAnalytics,
   EnrollmentTrend,
-  RevenueByType,
 } from '@/types/course.types'
 import {
   LineChart,
   Line,
   BarChart,
   Bar,
-  AreaChart,
-  Area,
   PieChart,
   Pie,
   Cell,
@@ -22,13 +19,10 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-import { formatCurrency } from '@/utils/currencyParser'
 
 interface CourseChartsProps {
   analytics: CourseAnalytics[]
   enrollmentTrends: EnrollmentTrend[]
-  revenueByType: RevenueByType[]
-  revenueByMonth: Array<{ month: string; revenue: number; byPaymentMethod?: Record<string, number> }>
   statusDistribution?: Array<{ name: string; value: number }>
 }
 
@@ -44,8 +38,6 @@ const STATUS_COLORS: Record<string, string> = {
 export function CourseCharts({
   analytics,
   enrollmentTrends,
-  revenueByType,
-  revenueByMonth,
   statusDistribution: providedStatusDistribution,
 }: CourseChartsProps) {
   // Chart 1: Enrollment Trends Over Time
@@ -105,24 +97,7 @@ export function CourseCharts({
       }))
   }, [analytics])
 
-  // Chart 3: Revenue by Course Type
-  const revenueByTypeData = useMemo(() => {
-    if (!revenueByType || revenueByType.length === 0) {
-      console.warn('Revenue by Type: No data available', revenueByType)
-      return []
-    }
-    const data = revenueByType
-      .filter((type) => type.programTypeId !== -1) // Filter out unknown types
-      .map((type) => ({
-        type: type.programTypeId ? `Type ${type.programTypeId}` : 'Unknown',
-        total: type.totalRevenue || 0,
-        average: type.averageRevenue || 0,
-      }))
-    console.log('Revenue by Type Data:', data)
-    return data
-  }, [revenueByType])
-
-  // Chart 4: Enrollment Status Distribution
+  // Chart 3: Enrollment Status Distribution
   const statusDistribution = useMemo(() => {
     // Use provided status distribution if available, otherwise fallback to calculated
     if (providedStatusDistribution && providedStatusDistribution.length > 0) {
@@ -139,21 +114,7 @@ export function CourseCharts({
     ].filter((item) => item.value > 0)
   }, [analytics, providedStatusDistribution])
 
-  // Chart 5: Revenue Timeline (grouped by year)
-  const revenueTimelineData = useMemo(() => {
-    if (!revenueByMonth || revenueByMonth.length === 0) {
-      console.warn('Revenue Timeline: No data available', revenueByMonth)
-      return []
-    }
-    const data = revenueByMonth.map((item) => ({
-      year: item.month || 'Unknown', // 'month' key actually contains year now
-      revenue: item.revenue || 0,
-    }))
-    console.log('Revenue Timeline Data (by year):', data)
-    return data
-  }, [revenueByMonth])
-
-  // Chart 6: Course Location Heatmap
+  // Chart 4: Course Location Heatmap
   const locationData = useMemo(() => {
     const locationCounts = new Map<string, number>()
     analytics.forEach((a) => {
@@ -225,31 +186,8 @@ export function CourseCharts({
         </ChartCard>
       </div>
 
-      {/* Row 2: Revenue by Type and Status Distribution */}
+      {/* Row 2: Status Distribution */}
       <div className="grid gap-6 md:grid-cols-2">
-        <ChartCard
-          title="Revenue by Course Type"
-          description="Total and average revenue by program type"
-        >
-          {revenueByTypeData.length === 0 ? (
-            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-              No revenue data available
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={revenueByTypeData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="type" />
-                <YAxis />
-                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                <Legend />
-                <Bar dataKey="total" fill="#0088FE" name="Total Revenue" />
-                <Bar dataKey="average" fill="#00C49F" name="Average Revenue" />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
-        </ChartCard>
-
         <ChartCard
           title="Enrollment Status Distribution"
           description="Breakdown of enrollment statuses"
@@ -279,41 +217,8 @@ export function CourseCharts({
         </ChartCard>
       </div>
 
-      {/* Row 3: Revenue Timeline and Location Heatmap */}
+      {/* Row 3: Location Heatmap */}
       <div className="grid gap-6 md:grid-cols-2">
-                    <ChartCard
-                      title="Revenue Timeline"
-                      description="Annual revenue over time"
-                    >
-                      {revenueTimelineData.length === 0 ? (
-                        <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                          No revenue timeline data available
-                        </div>
-                      ) : (
-                        <ResponsiveContainer width="100%" height={300}>
-                          <AreaChart data={revenueTimelineData}>
-                            <defs>
-                              <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#0088FE" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#0088FE" stopOpacity={0} />
-                              </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="year" />
-                            <YAxis />
-                            <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                            <Area
-                              type="monotone"
-                              dataKey="revenue"
-                              stroke="#0088FE"
-                              fillOpacity={1}
-                              fill="url(#colorRevenue)"
-                            />
-                          </AreaChart>
-                        </ResponsiveContainer>
-                      )}
-                    </ChartCard>
-
         <ChartCard
           title="Course Location Heatmap"
           description="Top 15 locations by course count"

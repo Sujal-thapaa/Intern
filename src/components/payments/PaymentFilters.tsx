@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import {
@@ -11,7 +10,7 @@ import {
 } from '@/components/ui/select'
 import { PaymentFilterState } from '@/types/payment.types'
 import { getDatePresets } from '@/utils/dateGrouping'
-import { Search, X } from 'lucide-react'
+import { X } from 'lucide-react'
 
 interface PaymentFiltersProps {
   filters: PaymentFilterState
@@ -51,8 +50,7 @@ export function PaymentFilters({
     filters.dateRange[0] !== null ||
     filters.dateRange[1] !== null ||
     filters.paymentMethods.length > 0 ||
-    filters.hasApproval !== null ||
-    filters.search !== ''
+    filters.hasApproval !== null
 
   return (
     <Card className="rounded-xl shadow-sm">
@@ -72,17 +70,6 @@ export function PaymentFilters({
               {preset.label}
             </Button>
           ))}
-        </div>
-
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by Payment ID, Approval Number, DAS Number..."
-            value={filters.search}
-            onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
-            className="pl-10"
-          />
         </div>
 
         {/* Filters Grid */}

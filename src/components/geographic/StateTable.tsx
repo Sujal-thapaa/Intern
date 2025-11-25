@@ -11,9 +11,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Input } from '@/components/ui/input'
 import { StateMetrics } from '@/types/geographic.types'
-import { ChevronDown, ChevronRight, Download, Search } from 'lucide-react'
+import { ChevronDown, ChevronRight, Download } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency } from '@/utils/currencyParser'
 
@@ -25,11 +24,8 @@ interface StateTableProps {
 
 export function StateTable({ stateMetrics, isLoading, onStateClick }: StateTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
-  const [searchTerm, setSearchTerm] = useState('')
 
-  const filteredMetrics = stateMetrics.filter((state) =>
-    state.state.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredMetrics = stateMetrics
 
   const toggleRow = (state: string) => {
     const newExpanded = new Set(expandedRows)
@@ -72,21 +68,10 @@ export function StateTable({ stateMetrics, isLoading, onStateClick }: StateTable
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>State-by-State Breakdown</CardTitle>
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search states..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-64"
-              />
-            </div>
-            <Button onClick={handleExport} variant="outline" size="sm" className="flex items-center gap-2">
-              <Download className="h-4 w-4" />
-              Export
-            </Button>
-          </div>
+          <Button onClick={handleExport} variant="outline" size="sm" className="flex items-center gap-2">
+            <Download className="h-4 w-4" />
+            Export
+          </Button>
         </div>
       </CardHeader>
       <CardContent>

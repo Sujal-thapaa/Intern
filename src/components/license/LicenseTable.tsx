@@ -77,16 +77,6 @@ export function LicenseTable({
       filtered = filtered.filter((l) => l.is_current === filters.isCurrent)
     }
 
-    if (filters.search) {
-      const searchTerm = filters.search.toLowerCase()
-      filtered = filtered.filter(
-        (l) =>
-          l['DAS Number'].toLowerCase().includes(searchTerm) ||
-          l['License Number']?.toLowerCase().includes(searchTerm) ||
-          l.participant_name.toLowerCase().includes(searchTerm)
-      )
-    }
-
     // Sort
     filtered.sort((a, b) => {
       let aVal: any
