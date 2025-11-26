@@ -20,21 +20,38 @@ export default function Courses() {
     isLoading: isLoadingTrends,
   } = useEnrollmentTrends()
 
-  // Fetch status distribution from participant_course
+  // Fetch status distribution from participant_course with pagination
   const {
     data: statusDistribution,
   } = useQuery({
     queryKey: ['statusDistribution'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('participant_course')
-        .select('Status')
+      // Fetch ALL participant courses using pagination
+      let allData: ParticipantCourse[] = []
+      let from = 0
+      const pageSize = 1000
+      let hasMore = true
 
-      if (error) throw error
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('participant_course')
+          .select('Status')
+          .range(from, from + pageSize - 1)
+
+        if (error) throw error
+
+        if (data && data.length > 0) {
+          allData = [...allData, ...(data as ParticipantCourse[])]
+          from += pageSize
+          hasMore = data.length === pageSize
+        } else {
+          hasMore = false
+        }
+      }
 
       // Count statuses (normalize variations)
       const statusCounts = new Map<string, number>()
-      ;(data as ParticipantCourse[]).forEach((pc) => {
+      allData.forEach((pc) => {
         const status = normalizeStatus(pc.Status) // Normalize status to handle variations
         statusCounts.set(status, (statusCounts.get(status) || 0) + 1)
       })
@@ -44,6 +61,7 @@ export default function Courses() {
         .map(([name, value]) => ({ name, value }))
         .sort((a, b) => b.value - a.value) // Sort by count descending
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes
   })
 
   if (analyticsError) {

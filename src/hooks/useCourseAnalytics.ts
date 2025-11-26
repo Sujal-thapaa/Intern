@@ -24,34 +24,60 @@ export function useCourseAnalytics(options: UseCourseAnalyticsOptions = {}) {
         throw coursesError
       }
 
-      // Fetch all course location dates
+      // Fetch ALL course location dates using pagination
       // Try different table name variations
-      let courseLocations: any[] | null = null
+      let courseLocations: any[] = []
+      let tableName: string | null = null
       
       // Try course_location_date first
-      let query = supabase.from('course_location_date').select('*')
-      const result1 = await query
+      let testQuery = supabase.from('course_location_date').select('*', { count: 'exact', head: true })
+      const testResult1 = await testQuery
       
-      if (result1.error) {
+      if (testResult1.error) {
         // Try alternative table name
         console.warn('Table "course_location_date" not found, trying alternatives...')
-        const result2 = await supabase.from('course_location_data').select('*')
+        testQuery = supabase.from('course_location_data').select('*', { count: 'exact', head: true })
+        const testResult2 = await testQuery
         
-        if (result2.error) {
+        if (testResult2.error) {
           console.error('Course locations error - tried both course_location_date and course_location_data:', {
-            error1: result1.error.message,
-            error2: result2.error.message,
+            error1: testResult1.error.message,
+            error2: testResult2.error.message,
           })
           throw new Error(
             `Could not find course location table. Tried: course_location_date, course_location_data. ` +
             `Please check your Supabase dashboard for the correct table name. ` +
-            `Error: ${result2.error.message}`
+            `Error: ${testResult2.error.message}`
           )
         } else {
-          courseLocations = result2.data
+          tableName = 'course_location_data'
         }
       } else {
-        courseLocations = result1.data
+        tableName = 'course_location_date'
+      }
+
+      // Fetch all locations with pagination
+      if (tableName) {
+        let from = 0
+        const pageSize = 1000
+        let hasMore = true
+
+        while (hasMore) {
+          const { data, error } = await supabase
+            .from(tableName)
+            .select('*')
+            .range(from, from + pageSize - 1)
+
+          if (error) throw error
+
+          if (data && data.length > 0) {
+            courseLocations = [...courseLocations, ...data]
+            from += pageSize
+            hasMore = data.length === pageSize
+          } else {
+            hasMore = false
+          }
+        }
       }
 
       // Fetch ALL participant courses using pagination
