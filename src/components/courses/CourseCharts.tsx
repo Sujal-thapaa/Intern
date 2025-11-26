@@ -114,24 +114,6 @@ export function CourseCharts({
     ].filter((item) => item.value > 0)
   }, [analytics, providedStatusDistribution])
 
-  // Chart 4: Course Location Heatmap
-  const locationData = useMemo(() => {
-    const locationCounts = new Map<string, number>()
-    analytics.forEach((a) => {
-      a.locations.forEach((loc) => {
-        // Use Location field if available and not empty, otherwise use "Unknown Location"
-        const locationName = loc.Location?.trim() || 'Unknown Location'
-        if (locationName) {
-          locationCounts.set(locationName, (locationCounts.get(locationName) || 0) + 1)
-        }
-      })
-    })
-    return Array.from(locationCounts.entries())
-      .map(([location, count]) => ({ location, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 15)
-  }, [analytics])
-
   return (
     <div className="space-y-6">
       {/* Row 1: Enrollment Trends and Top Courses */}
@@ -215,24 +197,6 @@ export function CourseCharts({
               </Pie>
               <Tooltip />
             </PieChart>
-          </ResponsiveContainer>
-        </ChartCard>
-      </div>
-
-      {/* Row 3: Location Heatmap */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <ChartCard
-          title="Course Location Heatmap"
-          description="All time | course_location_date.Location"
-        >
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={locationData} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis dataKey="location" type="category" width={120} />
-              <Tooltip />
-              <Bar dataKey="count" fill="#8884d8" />
-            </BarChart>
           </ResponsiveContainer>
         </ChartCard>
       </div>
