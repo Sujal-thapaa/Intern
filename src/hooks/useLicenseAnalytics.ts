@@ -34,18 +34,25 @@ export function useLicenseAnalytics() {
 
       const licenses = allLicenses
 
-      // Fetch participants to enrich license data
-      const dasNumbers = (licenses as ParticipantLicense[])?.map((l) => l['DAS Number']) || []
+      // Fetch participants to enrich license data using pagination (Supabase .in() has a limit)
+      const dasNumbers = Array.from(new Set((licenses as ParticipantLicense[])?.map((l) => l['DAS Number']) || []))
       
       let participants: Participant[] = []
       if (dasNumbers.length > 0) {
-        const { data: participantsData, error: participantsError } = await supabase
-          .from('participant')
-          .select('*')
-          .in('"DAS Number"', dasNumbers)
+        // Supabase .in() has a limit of ~1000 items, so we need to batch
+        const batchSize = 1000
+        for (let i = 0; i < dasNumbers.length; i += batchSize) {
+          const batch = dasNumbers.slice(i, i + batchSize)
+          const { data: participantsData, error: participantsError } = await supabase
+            .from('participant')
+            .select('*')
+            .in('"DAS Number"', batch)
 
-        if (participantsError) throw participantsError
-        participants = (participantsData as Participant[]) || []
+          if (participantsError) throw participantsError
+          if (participantsData) {
+            participants = [...participants, ...(participantsData as Participant[])]
+          }
+        }
       }
 
       // Create participant map
@@ -122,6 +129,7 @@ export function useLicenseAnalytics() {
         professionCounts: Object.fromEntries(professionCounts),
       }
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes - license data doesn't change often
   })
 }
 

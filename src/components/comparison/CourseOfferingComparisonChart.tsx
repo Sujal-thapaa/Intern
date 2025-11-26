@@ -79,7 +79,7 @@ export function CourseOfferingComparisonChart() {
       <CardHeader>
         <CardTitle>Year-over-Year Course Offering Comparison</CardTitle>
         <CardDescription>
-          Compare number of courses offered per month between two years
+          User-selected years | course_location_date.Begin Date
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

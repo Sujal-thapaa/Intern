@@ -46,8 +46,8 @@ export function aggregateByGeography(
       data.active_count++
     }
     data.total_classes += participant['Classes Taken'] || 0
-    // Add revenue if available (would need to be passed in)
-    // data.total_revenue += (participant as any).revenue || 0
+    // Add revenue if available (from enriched participant)
+    data.total_revenue += (participant as any).revenue || 0
   })
 
   // Calculate averages

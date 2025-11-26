@@ -105,6 +105,7 @@ export function useEnrollmentTrends(options: UseEnrollmentTrendsOptions = {}) {
         return trend as EnrollmentTrend
       })
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes - enrollment trends don't change often
   })
 }
 

@@ -8,26 +8,78 @@ export function useGeographicAnalytics() {
   return useQuery({
     queryKey: ['geographicAnalytics'],
     queryFn: async () => {
-      // Fetch all participants
-      const { data: participants, error: participantsError } = await supabase
-        .from('participant')
-        .select('*')
+      // Fetch all participants using pagination
+      let allParticipants: Participant[] = []
+      let from = 0
+      const pageSize = 1000
+      let hasMore = true
 
-      if (participantsError) throw participantsError
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('participant')
+          .select('*')
+          .range(from, from + pageSize - 1)
 
-      // Fetch payments for revenue calculation
-      const { data: payments, error: paymentsError } = await supabase
-        .from('payment')
-        .select('*')
+        if (error) throw error
 
-      if (paymentsError) throw paymentsError
+        if (data && data.length > 0) {
+          allParticipants = [...allParticipants, ...(data as Participant[])]
+          from += pageSize
+          hasMore = data.length === pageSize
+        } else {
+          hasMore = false
+        }
+      }
 
-      // Fetch participant courses for linking
-      const { data: participantCourses, error: pcError } = await supabase
-        .from('participant_course')
-        .select('*')
+      const participants = allParticipants
 
-      if (pcError) throw pcError
+      // Fetch payments for revenue calculation using pagination
+      let allPayments: any[] = []
+      from = 0
+      hasMore = true
+
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('payment')
+          .select('*')
+          .range(from, from + pageSize - 1)
+
+        if (error) throw error
+
+        if (data && data.length > 0) {
+          allPayments = [...allPayments, ...data]
+          from += pageSize
+          hasMore = data.length === pageSize
+        } else {
+          hasMore = false
+        }
+      }
+
+      const payments = allPayments
+
+      // Fetch participant courses for linking using pagination
+      let allParticipantCourses: any[] = []
+      from = 0
+      hasMore = true
+
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('participant_course')
+          .select('*')
+          .range(from, from + pageSize - 1)
+
+        if (error) throw error
+
+        if (data && data.length > 0) {
+          allParticipantCourses = [...allParticipantCourses, ...data]
+          from += pageSize
+          hasMore = data.length === pageSize
+        } else {
+          hasMore = false
+        }
+      }
+
+      const participantCourses = allParticipantCourses
 
       // Create maps for revenue calculation
       const paymentMap = new Map<number, number>()
@@ -116,6 +168,7 @@ export function useGeographicAnalytics() {
         totalParticipants: participants?.length || 0,
       }
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes - geographic data doesn't change often
   })
 }
 

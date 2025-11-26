@@ -80,7 +80,7 @@ export function RevenueComparisonChart() {
       <CardHeader>
         <CardTitle>Year-over-Year Revenue Comparison</CardTitle>
         <CardDescription>
-          Compare total revenue per month between two years based on course enrollments
+          User-selected years | payment.Date, payment.Amount
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

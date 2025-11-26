@@ -33,7 +33,9 @@ export function CourseMetrics({ analytics, isLoading }: CourseMetricsProps) {
   }
 
   // Calculate metrics
-  const totalCourses = analytics.filter((a) => a.course.CourseStatus === 1).length
+  // Count all courses (not just active ones)
+  const totalCourses = analytics.length
+  const activeCourses = analytics.filter((a) => a.course.CourseStatus === 1).length
   const totalEnrollments = analytics.reduce((sum, a) => sum + a.enrollmentCount, 0)
   const totalRevenue = analytics.reduce((sum, a) => sum + a.totalRevenue, 0)
   const averageRevenuePerCourse =
@@ -63,7 +65,7 @@ export function CourseMetrics({ analytics, isLoading }: CourseMetricsProps) {
       title: 'Total Courses',
       value: totalCourses,
       icon: BookOpen,
-      description: 'Active courses',
+      description: `${activeCourses} active courses`,
     },
     {
       title: 'Total Enrollments',

@@ -119,8 +119,10 @@ export function CourseCharts({
     const locationCounts = new Map<string, number>()
     analytics.forEach((a) => {
       a.locations.forEach((loc) => {
-        if (loc.Location) {
-          locationCounts.set(loc.Location, (locationCounts.get(loc.Location) || 0) + 1)
+        // Use Location field if available and not empty, otherwise use "Unknown Location"
+        const locationName = loc.Location?.trim() || 'Unknown Location'
+        if (locationName) {
+          locationCounts.set(locationName, (locationCounts.get(locationName) || 0) + 1)
         }
       })
     })
@@ -136,7 +138,7 @@ export function CourseCharts({
       <div className="grid gap-6 md:grid-cols-2">
         <ChartCard
           title="Enrollment Trends Over Time"
-          description="Monthly enrollment breakdown by status"
+          description="All time | participant_course.Date/Time Registration Entered, participant_course.Status"
         >
           {enrollmentTrendsData.length === 0 ? (
             <div className="h-[300px] flex items-center justify-center text-muted-foreground border-2 border-dashed rounded-lg">
@@ -171,7 +173,7 @@ export function CourseCharts({
 
         <ChartCard
           title="Top 10 Courses by Enrollment"
-          description="Most popular courses"
+          description="All time | participant_course.Course ID, course.Course Name"
         >
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={topCourses} layout="vertical">
@@ -190,7 +192,7 @@ export function CourseCharts({
       <div className="grid gap-6 md:grid-cols-2">
         <ChartCard
           title="Enrollment Status Distribution"
-          description="Breakdown of enrollment statuses"
+          description="All time | participant_course.Status"
         >
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -221,7 +223,7 @@ export function CourseCharts({
       <div className="grid gap-6 md:grid-cols-2">
         <ChartCard
           title="Course Location Heatmap"
-          description="Top 15 locations by course count"
+          description="All time | course_location_date.Location"
         >
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={locationData} layout="vertical">

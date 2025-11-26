@@ -59,7 +59,7 @@ export function ParticipantCharts({ participants }: ParticipantChartsProps) {
       {/* Chart 1: Participants by State (Top 10) */}
       <ChartCard
         title="Participants by State (Top 10)"
-        description="Horizontal bar chart showing top 10 states"
+        description="All time | participant.State/Province"
       >
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
@@ -80,7 +80,7 @@ export function ParticipantCharts({ participants }: ParticipantChartsProps) {
       {/* Chart 2: Classes Taken Distribution */}
       <ChartCard
         title="Classes Taken Distribution"
-        description="Histogram showing distribution of classes taken"
+        description="All time | participant.Classes Taken"
       >
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart

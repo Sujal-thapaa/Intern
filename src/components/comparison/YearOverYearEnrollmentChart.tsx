@@ -76,7 +76,7 @@ export function YearOverYearEnrollmentChart() {
       <CardHeader>
         <CardTitle>Year-over-Year Enrollment Comparison</CardTitle>
         <CardDescription>
-          Compare monthly course enrollments between two years
+          User-selected years | participant_course.Date/Time Registration Entered
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

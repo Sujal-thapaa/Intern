@@ -10,7 +10,6 @@ const Dashboard = lazy(() => import('@/pages/Dashboard'))
 const Participants = lazy(() => import('@/pages/Participants'))
 const Courses = lazy(() => import('@/pages/Courses'))
 const Payments = lazy(() => import('@/pages/Payments'))
-const Licenses = lazy(() => import('@/pages/Licenses'))
 const GeographicLicense = lazy(() => import('@/pages/GeographicLicense'))
 const Comparison = lazy(() => import('@/pages/Comparison'))
 
@@ -49,7 +48,6 @@ function App() {
                 <Route path="/participants" element={<Participants />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/payments" element={<Payments />} />
-                <Route path="/licenses" element={<Licenses />} />
                 <Route path="/geographic-license" element={<GeographicLicense />} />
                 <Route path="/comparison" element={<Comparison />} />
                 <Route path="*" element={<Navigate to="/dashboard" replace />} />

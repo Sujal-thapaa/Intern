@@ -180,6 +180,7 @@ export function useCourseAnalytics(options: UseCourseAnalyticsOptions = {}) {
 
       return analytics
     },
+    staleTime: 10 * 60 * 1000, // 10 minutes - course data doesn't change often
   })
 }
 

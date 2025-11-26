@@ -62,31 +62,6 @@ export function usePaymentAnalytics(options: UsePaymentAnalyticsOptions = {}) {
       // Calculate growth (compare with previous period)
       const growthPercentage = 0 // Would need previous period data to calculate
 
-      // Calculate this month vs last month
-      const now = new Date()
-      const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1)
-      const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1)
-      const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0)
-
-      const thisMonthPayments = paymentList.filter((p) => {
-        const paymentDate = new Date(p.Date)
-        return paymentDate >= thisMonthStart
-      })
-
-      const lastMonthPayments = paymentList.filter((p) => {
-        const paymentDate = new Date(p.Date)
-        return paymentDate >= lastMonthStart && paymentDate <= lastMonthEnd
-      })
-
-      const revenueThisMonth = thisMonthPayments.reduce(
-        (sum, p) => sum + parseCurrency(p.Amount),
-        0
-      )
-      const revenueLastMonth = lastMonthPayments.reduce(
-        (sum, p) => sum + parseCurrency(p.Amount),
-        0
-      )
-
       // Find highest transaction
       const highestTransaction = Math.max(
         ...paymentList.map((p) => parseCurrency(p.Amount)),
@@ -113,8 +88,8 @@ export function usePaymentAnalytics(options: UsePaymentAnalyticsOptions = {}) {
         fullPaymentCount,
         partialPaymentCount,
         growthPercentage,
-        revenueThisMonth,
-        revenueLastMonth,
+        revenueThisMonth: 0,
+        revenueLastMonth: 0,
         highestTransaction,
         mostActiveMethod,
         approvalRate,
@@ -147,6 +122,7 @@ export function usePaymentAnalytics(options: UsePaymentAnalyticsOptions = {}) {
         payments: paymentList,
       }
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 }
 

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
-import { ParticipantCourse } from '@/types/course.types'
+import { Payment } from '@/types/payment.types'
 import { parseCurrency } from '@/utils/currencyParser'
 
 export interface MonthlyRevenue {
@@ -26,34 +26,35 @@ const MONTH_NAMES = [
 /**
  * Get monthly revenue grouped by month for a specific year
  * Returns an array of 12 months with revenue totals (0 if no data)
+ * Uses payment table for consistency with Revenue Trend Analysis
  */
 export function getMonthlyRevenueByYear(year: number): Promise<MonthlyRevenue[]> {
   return new Promise(async (resolve, reject) => {
     try {
-      const startDate = `${year}-01-01T00:00:00`
-      const endDate = `${year}-12-31T23:59:59`
+      const startDate = `${year}-01-01`
+      const endDate = `${year}-12-31`
 
-      // Fetch all participant courses for the year using pagination
-      let allData: ParticipantCourse[] = []
+      // Fetch all payments for the year using pagination
+      let allData: Payment[] = []
       let from = 0
       const pageSize = 1000
       let hasMore = true
 
       while (hasMore) {
         const { data, error } = await supabase
-          .from('participant_course')
-          .select('"Total Due", "Date/Time Registration Entered"')
-          .gte('"Date/Time Registration Entered"', startDate)
-          .lte('"Date/Time Registration Entered"', endDate)
-          .not('"Total Due"', 'is', null)
-          .not('"Date/Time Registration Entered"', 'is', null)
-          .order('"Date/Time Registration Entered"', { ascending: true })
+          .from('payment')
+          .select('"Date", "Amount"')
+          .gte('"Date"', startDate)
+          .lte('"Date"', endDate)
+          .not('"Date"', 'is', null)
+          .not('"Amount"', 'is', null)
+          .order('"Date"', { ascending: true })
           .range(from, from + pageSize - 1)
 
         if (error) throw error
 
         if (data && data.length > 0) {
-          allData = [...allData, ...(data as ParticipantCourse[])]
+          allData = [...allData, ...(data as Payment[])]
           from += pageSize
           hasMore = data.length === pageSize
         } else {
@@ -68,22 +69,22 @@ export function getMonthlyRevenueByYear(year: number): Promise<MonthlyRevenue[]>
       }
 
       // Sum revenue by month (0-indexed: 0 = Jan, 11 = Dec)
-      allData.forEach((pc) => {
-        const dateStr = pc['Date/Time Registration Entered']
-        const totalDueStr = pc['Total Due']
+      allData.forEach((payment) => {
+        const dateStr = payment.Date
+        const amountStr = payment.Amount
         
-        if (!dateStr || !totalDueStr) return
+        if (!dateStr || !amountStr) return
 
         try {
           const date = new Date(dateStr)
           const month = date.getMonth() // 0-11
-          const revenue = parseCurrency(totalDueStr)
+          const revenue = parseCurrency(amountStr)
           
           if (!isNaN(month) && revenue > 0) {
             monthRevenue.set(month, (monthRevenue.get(month) || 0) + revenue)
           }
         } catch (error) {
-          console.warn('Invalid date or revenue format:', { dateStr, totalDueStr })
+          console.warn('Invalid date or revenue format:', { dateStr, amountStr })
         }
       })
 
@@ -101,29 +102,30 @@ export function getMonthlyRevenueByYear(year: number): Promise<MonthlyRevenue[]>
 }
 
 /**
- * Get all distinct years from participant_course table based on Date/Time Registration Entered
+ * Get all distinct years from payment table based on Date
+ * Uses payment table for consistency with Revenue Trend Analysis
  */
 export function getRevenueAvailableYears(): Promise<number[]> {
   return new Promise(async (resolve, reject) => {
     try {
-      // Fetch all participant courses to extract years
-      let allData: ParticipantCourse[] = []
+      // Fetch all payments to extract years
+      let allData: Payment[] = []
       let from = 0
       const pageSize = 1000
       let hasMore = true
 
       while (hasMore) {
         const { data, error } = await supabase
-          .from('participant_course')
-          .select('"Date/Time Registration Entered"')
-          .not('"Date/Time Registration Entered"', 'is', null)
-          .order('"Date/Time Registration Entered"', { ascending: true })
+          .from('payment')
+          .select('"Date"')
+          .not('"Date"', 'is', null)
+          .order('"Date"', { ascending: true })
           .range(from, from + pageSize - 1)
 
         if (error) throw error
 
         if (data && data.length > 0) {
-          allData = [...allData, ...(data as ParticipantCourse[])]
+          allData = [...allData, ...(data as Payment[])]
           from += pageSize
           hasMore = data.length === pageSize
         } else {
@@ -133,8 +135,8 @@ export function getRevenueAvailableYears(): Promise<number[]> {
 
       // Extract unique years
       const yearsSet = new Set<number>()
-      allData.forEach((pc) => {
-        const dateStr = pc['Date/Time Registration Entered']
+      allData.forEach((payment) => {
+        const dateStr = payment.Date
         if (!dateStr) return
 
         try {

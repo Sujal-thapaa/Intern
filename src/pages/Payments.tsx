@@ -16,7 +16,7 @@ export default function Payments() {
     data: trendsData,
     isLoading: isLoadingTrends,
   } = useRevenueTrends({
-    groupBy: 'day',
+    groupBy: 'month',
   })
 
   if (analyticsError) {

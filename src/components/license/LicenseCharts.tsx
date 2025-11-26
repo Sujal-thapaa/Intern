@@ -91,7 +91,7 @@ export function LicenseCharts({ licenses, professionCounts }: LicenseChartsProps
       <div className="grid gap-6 md:grid-cols-2">
         <ChartCard
           title="License Distribution by Profession"
-          description="Pie chart showing profession breakdown"
+          description="All time | participant_license.Profession/Organization"
         >
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -119,7 +119,7 @@ export function LicenseCharts({ licenses, professionCounts }: LicenseChartsProps
 
         <ChartCard
           title="Licenses by State (Top 15)"
-          description="Stacked bar chart showing license distribution"
+          description="All time | participant_license.State/Province"
         >
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={licensesByState}>
@@ -137,7 +137,7 @@ export function LicenseCharts({ licenses, professionCounts }: LicenseChartsProps
       {/* Row 2: License Update Timeline */}
       <ChartCard
         title="License Update Timeline"
-        description="License updates over time"
+        description="All time | participant_license.DateUpdated"
       >
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={updateTimeline}>

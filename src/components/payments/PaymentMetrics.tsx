@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RevenueMetrics } from '@/types/payment.types'
-import { DollarSign, CreditCard, TrendingUp, CheckCircle, AlertCircle, ArrowUp, ArrowDown } from 'lucide-react'
+import { DollarSign, CreditCard, TrendingUp, CheckCircle, AlertCircle, ArrowUp } from 'lucide-react'
 import { formatCurrency } from '@/utils/currencyParser'
 
 interface PaymentMetricsProps {
@@ -31,11 +31,6 @@ export function PaymentMetrics({ metrics, isLoading }: PaymentMetricsProps) {
   }
 
   if (!metrics) return null
-
-  const monthChange =
-    metrics.revenueLastMonth > 0
-      ? ((metrics.revenueThisMonth - metrics.revenueLastMonth) / metrics.revenueLastMonth) * 100
-      : 0
 
   const primaryCards = [
     {
@@ -74,13 +69,6 @@ export function PaymentMetrics({ metrics, isLoading }: PaymentMetricsProps) {
   ]
 
   const secondaryCards = [
-    {
-      title: 'This Month vs Last Month',
-      value: formatCurrency(metrics.revenueThisMonth),
-      subtitle: `Last month: ${formatCurrency(metrics.revenueLastMonth)}`,
-      change: monthChange,
-      icon: DollarSign,
-    },
     {
       title: 'Highest Transaction',
       value: formatCurrency(metrics.highestTransaction),
@@ -144,20 +132,6 @@ export function PaymentMetrics({ metrics, isLoading }: PaymentMetricsProps) {
                 <div className="text-lg font-semibold">{card.value}</div>
                 {card.subtitle && (
                   <p className="text-xs text-muted-foreground mt-1">{card.subtitle}</p>
-                )}
-                {card.change !== undefined && (
-                  <div
-                    className={`flex items-center gap-1 mt-1 text-xs ${
-                      card.change >= 0 ? 'text-green-600' : 'text-red-600'
-                    }`}
-                  >
-                    {card.change >= 0 ? (
-                      <ArrowUp className="h-3 w-3" />
-                    ) : (
-                      <ArrowDown className="h-3 w-3" />
-                    )}
-                    <span>{Math.abs(card.change).toFixed(1)}%</span>
-                  </div>
                 )}
               </CardContent>
             </Card>

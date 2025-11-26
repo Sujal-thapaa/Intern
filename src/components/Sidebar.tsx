@@ -4,7 +4,6 @@ import {
   Users,
   BookOpen,
   CreditCard,
-  FileText,
   Menu,
   X,
   MapPin,
@@ -19,7 +18,6 @@ const navigation = [
   { name: 'Participants', href: '/participants', icon: Users },
   { name: 'Courses', href: '/courses', icon: BookOpen },
   { name: 'Payments', href: '/payments', icon: CreditCard },
-  { name: 'Licenses', href: '/licenses', icon: FileText },
   { name: 'Geographic & License', href: '/geographic-license', icon: MapPin },
   { name: 'Comparison', href: '/comparison', icon: TrendingUp },
 ]

@@ -72,8 +72,10 @@ export function useRevenueTrends(options: UseRevenueTrendsOptions = {}) {
         }
       }
 
-      // Calculate moving average (7-day)
-      const movingAverage = calculateMovingAverage(grouped, 7)
+      // Calculate moving average based on grouping
+      // For daily: 7-day average, for monthly: 3-month average
+      const windowSize = groupBy === 'month' ? 3 : groupBy === 'week' ? 4 : 7
+      const movingAverage = calculateMovingAverage(grouped, windowSize)
 
       // Calculate cumulative revenue
       let cumulative = 0
@@ -90,6 +92,7 @@ export function useRevenueTrends(options: UseRevenueTrendsOptions = {}) {
         cumulativeRevenue,
       }
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 }
 
